@@ -1,19 +1,15 @@
 import { Router } from "express";
 import { User } from "../models/user.model.js";
-import Joi from "@hapi/joi";
+import {registerValidation} from "../validation.js"
 
 const router = Router();
 
-const schema = Joi.object({
-  name: Joi.string().min(6).required(),
-  email: Joi.string().min(6).required().email(),
-  password: Joi.string().min(6).required(),
-});
+
 
 router.post("/register", async (req, res) => {
   // Validate the data before we make a User
-  const validation = schema.validate(req.body);
-  res.send(validation);
+  const {error} = registerValidation(req.body);
+  if(error) return res.status(400).send(error.details[0].message)
 
   const user = new User({
     name: req.body.name,
