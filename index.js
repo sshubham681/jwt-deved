@@ -1,18 +1,21 @@
 import express from "express";
 import { connectToDB } from "./db/db.js";
 import dotenv from "dotenv";
+import authRoute from "./routes/auth.js";
 const app = express();
 
 dotenv.config({
   path: "./.env",
 });
 
-// import Routes
-import authRoute from "./routes/auth.js";
+// connect to DB
+connectToDB();
+
+// middleware
+app.use(express.json());
 
 // Route Middleware
 app.use("/api/user", authRoute);
-connectToDB();
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
