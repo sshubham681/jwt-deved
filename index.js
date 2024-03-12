@@ -2,6 +2,8 @@ import express from "express";
 import { connectToDB } from "./db/db.js";
 import dotenv from "dotenv";
 import authRoute from "./routes/auth.js";
+import postRoute from './routes/posts.js'
+
 const app = express();
 
 dotenv.config({
@@ -16,6 +18,7 @@ app.use(express.json());
 
 // Route Middleware
 app.use("/api/user", authRoute);
+app.use('/api/posts',postRoute)
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
